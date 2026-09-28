@@ -1,0 +1,39 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "deliveryAddress": { "city": "Bogotá" },
+            "deliveryOptions": [
+              { "handle": "san-andres-standard", "title": "Archipiélago de San Andrés, Providencia y Santa Catalina" },
+              { "handle": "nacional-standard", "title": "Nacional (Excepto San Andrés y zonas de difícil acceso)" }
+            ]
+          }
+        ]
+      },
+      "shop": {
+        "antioquiaMedellin": null,
+        "sanAndres": {
+          "config": {
+            "jsonValue": { "zoneKeyword": "san andres", "municipalities": ["San Andrés"] }
+          }
+        },
+        "caliManizalesPereira": null,
+        "nacional": {
+          "config": {
+            "jsonValue": { "zoneKeyword": "nacional", "municipalities": [] }
+          }
+        },
+        "choco": null
+      }
+    },
+    "output": {
+      "operations": [
+        { "deliveryOptionHide": { "deliveryOptionHandle": "san-andres-standard" } }
+      ]
+    }
+  }
+}

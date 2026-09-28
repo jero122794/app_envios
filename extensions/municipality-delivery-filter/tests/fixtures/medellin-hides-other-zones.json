@@ -1,0 +1,43 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "deliveryAddress": { "city": "Medellín" },
+            "deliveryOptions": [
+              { "handle": "medellin-standard", "title": "Medellín Estándar" },
+              { "handle": "choco-standard", "title": "Chocó Estándar" },
+              { "handle": "pickup", "title": "Recogida en tienda" }
+            ]
+          }
+        ]
+      },
+      "shop": {
+        "antioquiaMedellin": {
+          "config": {
+            "jsonValue": {
+              "zoneKeyword": "medellin",
+              "municipalities": ["Medellín", "Envigado"]
+            }
+          }
+        },
+        "sanAndres": null,
+        "caliManizalesPereira": null,
+        "nacional": null,
+        "choco": {
+          "config": {
+            "jsonValue": { "zoneKeyword": "choco", "municipalities": ["Quibdó"] }
+          }
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        { "deliveryOptionHide": { "deliveryOptionHandle": "choco-standard" } }
+      ]
+    }
+  }
+}

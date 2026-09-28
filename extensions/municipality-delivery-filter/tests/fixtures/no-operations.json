@@ -1,0 +1,32 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "deliveryAddress": { "city": "Bucaramanga" },
+            "deliveryOptions": [
+              { "handle": "medellin-standard", "title": "Medellín Estándar" }
+            ]
+          }
+        ]
+      },
+      "shop": {
+        "antioquiaMedellin": {
+          "config": {
+            "jsonValue": { "zoneKeyword": "medellin", "municipalities": ["Medellín"] }
+          }
+        },
+        "sanAndres": null,
+        "caliManizalesPereira": null,
+        "nacional": null,
+        "choco": null
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

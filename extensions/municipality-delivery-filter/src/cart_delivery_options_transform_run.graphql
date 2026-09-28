@@ -1,0 +1,61 @@
+# Each `shop.metaobject(...)` alias below fetches ONE known, fixed-handle
+# "Municipality Zone" entry (type/handle set up in shopify.app.toml + seeded
+# from /app/setup-zones). Function input queries can't list metaobjects or
+# take runtime variables, so adding a brand-new zone means adding another
+# alias here (and in cart_delivery_options_transform_run.js), then
+# redeploying. Editing an existing zone's `config` field does NOT require a
+# redeploy — just edit the metaobject entry in the Shopify admin.
+#
+# zoneKeyword/municipalities/price are kept together in a single `config`
+# JSON field (instead of separate fields) to keep this query under Shopify
+# Functions' input query complexity limit (max 30) with 5 zones.
+query CartDeliveryOptionsTransformRunInput {
+  cart {
+    deliveryGroups {
+      deliveryAddress {
+        city
+      }
+      deliveryOptions {
+        handle
+        title
+      }
+    }
+  }
+  shop {
+    antioquiaMedellin: metaobject(
+      handle: { type: "$app:municipality_zone", handle: "antioquia-medellin" }
+    ) {
+      config: field(key: "config") {
+        jsonValue
+      }
+    }
+    sanAndres: metaobject(
+      handle: { type: "$app:municipality_zone", handle: "san-andres" }
+    ) {
+      config: field(key: "config") {
+        jsonValue
+      }
+    }
+    caliManizalesPereira: metaobject(
+      handle: { type: "$app:municipality_zone", handle: "cali-manizales-pereira" }
+    ) {
+      config: field(key: "config") {
+        jsonValue
+      }
+    }
+    nacional: metaobject(
+      handle: { type: "$app:municipality_zone", handle: "nacional" }
+    ) {
+      config: field(key: "config") {
+        jsonValue
+      }
+    }
+    choco: metaobject(
+      handle: { type: "$app:municipality_zone", handle: "choco" }
+    ) {
+      config: field(key: "config") {
+        jsonValue
+      }
+    }
+  }
+}
