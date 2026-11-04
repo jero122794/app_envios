@@ -65,11 +65,13 @@ Los casos de prueba están en `tests/fixtures/` (Cali, Palmira, Pereira, Dosqueb
 
 | Servicio | Para qué | Plan gratis |
 |---|---|---|
-| [Neon](https://neon.tech) | Base de datos PostgreSQL (sesiones) | 0,5 GB, sin vencimiento. Se suspende tras unos minutos sin uso y despierta sola. |
-| [Render](https://render.com) | Servidor de la app del admin | 750 h/mes (alcanza para un servicio 24/7). **Se duerme tras 15 min sin tráfico** y tarda hasta ~1 min en despertar. |
-| [UptimeRobot](https://uptimerobot.com) (opcional) | Mantener despierto el servidor de Render | 50 monitores cada 5 min |
+| [Neon](https://neon.tech) | Base de datos PostgreSQL (sesiones) | 1 GB y 100 CU-horas/mes por proyecto. No cobra excedentes: si se pasa, suspende hasta el mes siguiente. |
+| [Render](https://render.com) | Servidor de la app del admin | 750 h/mes (alcanza para un servicio 24/7). **Se duerme tras 15 min sin tráfico** y tarda ~1 min en despertar. |
+| [UptimeRobot](https://uptimerobot.com) (opcional) | Mantener despierto el servidor de Render | Monitores cada 5 min. Revisa sus términos: el plan gratis ha tenido restricciones de uso comercial. |
 
 > La función del checkout corre en Shopify, **no en Render**. Si el servidor está dormido o caído, el filtro de envíos **sigue funcionando**. Solo tarda en abrir la pantalla de configuración.
+
+> 💸 **Para no pagar nada: no agregues tarjeta en Render.** Sin método de pago, si se supera el ancho de banda o los minutos de build, Render suspende o frena el servicio en lugar de cobrar. Render indica que sus instancias gratis no son para producción: pueden reiniciarse o suspenderse. Con esta app el riesgo es menor porque el filtro no depende del servidor, pero la pantalla de configuración sí.
 
 ### Paso 1: Base de datos en Neon
 
@@ -88,14 +90,13 @@ No hace falta crear tablas: la app corre las migraciones sola al arrancar (`pris
 
 ### Paso 2: Subir el código a GitHub
 
-Render despliega desde un repositorio de GitHub (puede ser **privado**).
+Render despliega desde un repositorio de GitHub (puede ser **privado**). Este proyecto usa `jero122794/app_envios`.
 
 ```bash
 cd envios-colombia
 git add -A
 git commit -m "Preparar despliegue"
-git remote add origin git@github.com:TU_USUARIO/envios-colombia.git
-git push -u origin main
+git push origin main
 ```
 
 > El archivo `.env` está en `.gitignore` y **no** se sube. Nunca subas `SHOPIFY_API_SECRET` ni `DATABASE_URL` al repositorio.
@@ -178,7 +179,7 @@ Cada vez que hagas `git push` a `main`, Render vuelve a desplegar automáticamen
 
 ## Publicar en la Shopify App Store
 
-1. Dev Dashboard → envios-colombia → **Distribution** → **Shopify App Store**. Shopify puede cobrar una **tarifa única de registro** para publicar; revisa el valor actual en tu cuenta.
+1. Dev Dashboard → envios-colombia → **Distribution** → **Shopify App Store**. Shopify cobra una **tarifa única de registro de 19 USD** por cuenta de Partner. Si cobras por la app, Shopify retiene 0 % sobre el primer millón de USD de ingresos y 15 % después.
 2. Completa la ficha:
    - **Nombre** único, igual en la ficha y en `shopify.app.toml` (`name`).
    - **Ícono** y **capturas de pantalla** reales de la app (sin bordes del navegador).
@@ -228,4 +229,3 @@ La moneda de la tienda debe ser **COP** (Configuración → General). Si no lo e
 | Precios en USD | La moneda de la tienda no es COP. |
 | Una tarifa sale "Sin zona" | Su nombre no contiene ninguna palabra clave. Edita la palabra clave de la zona o pulsa **Crear zona**. |
 | "Faltan permisos" en la app | Recarga la app en el admin y acepta los permisos nuevos. |
-# app_envios

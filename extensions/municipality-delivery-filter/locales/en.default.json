@@ -1,4 +1,4 @@
 {
-  "name": "municipality-delivery-filter",
-  "description": "municipality-delivery-filter"
+  "name": "Shipping by municipality",
+  "description": "Shows only the shipping rate for the customer's department and municipality."
 }

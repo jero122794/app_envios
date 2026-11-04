@@ -1,0 +1,70 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "deliveryAddress": {
+              "city": "Cali",
+              "provinceCode": "VAC"
+            },
+            "deliveryOptions": [
+              {
+                "handle": "medellin",
+                "title": "Área Metropolitana de Medellín, municipios de Antioquia"
+              },
+              {
+                "handle": "cali",
+                "title": "Cali (Santiago de Cali, capital del departamento)"
+              },
+              {
+                "handle": "valle",
+                "title": "Municipios Valle del Cauca"
+              },
+              {
+                "handle": "pereira",
+                "title": "Pereira (Capital)"
+              },
+              {
+                "handle": "risaralda",
+                "title": "Municipios Risaralda"
+              },
+              {
+                "handle": "manizales",
+                "title": "Manizales (capital del departamento)"
+              },
+              {
+                "handle": "caldas",
+                "title": "Municipios de Caldas"
+              },
+              {
+                "handle": "resto",
+                "title": "Resto del país (Bogotá, Cartagena, Barranquilla, etc)"
+              },
+              {
+                "handle": "choco",
+                "title": "Chocó (Quibdó e Istmina)"
+              },
+              {
+                "handle": "san-andres",
+                "title": "San Andrés y Providencia"
+              },
+              {
+                "handle": "pickup",
+                "title": "Retiro en tienda"
+              }
+            ]
+          }
+        ]
+      },
+      "deliveryCustomization": {
+        "zones": null
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

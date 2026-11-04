@@ -1,0 +1,191 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "deliveryAddress": {
+              "city": "Rionegro",
+              "provinceCode": "ANT"
+            },
+            "deliveryOptions": [
+              {
+                "handle": "medellin",
+                "title": "Área Metropolitana de Medellín, municipios de Antioquia"
+              },
+              {
+                "handle": "cali",
+                "title": "Cali (Santiago de Cali, capital del departamento)"
+              },
+              {
+                "handle": "valle",
+                "title": "Municipios Valle del Cauca"
+              },
+              {
+                "handle": "pereira",
+                "title": "Pereira (Capital)"
+              },
+              {
+                "handle": "risaralda",
+                "title": "Municipios Risaralda"
+              },
+              {
+                "handle": "manizales",
+                "title": "Manizales (capital del departamento)"
+              },
+              {
+                "handle": "caldas",
+                "title": "Municipios de Caldas"
+              },
+              {
+                "handle": "resto",
+                "title": "Resto del país (Bogotá, Cartagena, Barranquilla, etc)"
+              },
+              {
+                "handle": "choco",
+                "title": "Chocó (Quibdó e Istmina)"
+              },
+              {
+                "handle": "san-andres",
+                "title": "San Andrés y Providencia"
+              },
+              {
+                "handle": "pickup",
+                "title": "Retiro en tienda"
+              }
+            ]
+          }
+        ]
+      },
+      "deliveryCustomization": {
+        "zones": {
+          "jsonValue": {
+            "zones": [
+              {
+                "label": "Medellín",
+                "keyword": "medellin",
+                "province": "ANT",
+                "municipalities": []
+              },
+              {
+                "label": "Cali",
+                "keyword": "cali",
+                "province": "VAC",
+                "municipalities": [
+                  "Cali",
+                  "Santiago de Cali"
+                ]
+              },
+              {
+                "label": "Valle",
+                "keyword": "valle del cauca",
+                "province": "VAC",
+                "municipalities": []
+              },
+              {
+                "label": "Pereira",
+                "keyword": "pereira",
+                "province": "RIS",
+                "municipalities": [
+                  "Pereira"
+                ]
+              },
+              {
+                "label": "Risaralda",
+                "keyword": "risaralda",
+                "province": "RIS",
+                "municipalities": []
+              },
+              {
+                "label": "Manizales",
+                "keyword": "manizales",
+                "province": "CAL",
+                "municipalities": [
+                  "Manizales"
+                ]
+              },
+              {
+                "label": "Caldas",
+                "keyword": "caldas",
+                "province": "CAL",
+                "municipalities": []
+              },
+              {
+                "label": "Chocó",
+                "keyword": "choco",
+                "province": "CHO",
+                "municipalities": [
+                  "Quibdó",
+                  "Istmina"
+                ]
+              },
+              {
+                "label": "San Andrés",
+                "keyword": "san andres",
+                "province": "SAP",
+                "municipalities": []
+              },
+              {
+                "label": "Resto",
+                "keyword": "resto del pais",
+                "province": "",
+                "municipalities": []
+              }
+            ]
+          }
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "cali"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "valle"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "pereira"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "risaralda"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "manizales"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "caldas"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "resto"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "choco"
+          }
+        },
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "san-andres"
+          }
+        }
+      ]
+    }
+  }
+}

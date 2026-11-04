@@ -8,9 +8,11 @@ generator client {
 // Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
 // enough when changing adapters.
 // See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+// PostgreSQL (e.g. Neon's free tier). Set DATABASE_URL in .env locally and in
+// the hosting provider's environment variables in production.
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Session {

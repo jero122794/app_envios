@@ -1,5 +1,4 @@
-import { redirect, Form, useLoaderData } from "react-router";
-import { login } from "../../shopify.server";
+import { redirect } from "react-router";
 import styles from "./styles.module.css";
 
 export const loader = async ({ request }) => {
@@ -9,45 +8,25 @@ export const loader = async ({ request }) => {
     throw redirect(`/app?${url.searchParams.toString()}`);
   }
 
-  return { showForm: Boolean(login) };
+  return null;
 };
 
+// Shown only when the app URL is opened outside the Shopify admin. App Store
+// apps must not ask merchants for their shop domain, so there is no login
+// form: the app is installed and opened from Shopify.
 export default function App() {
-  const { showForm } = useLoaderData();
-
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>A short heading about [your app]</h1>
+        <h1 className={styles.heading}>Envíos por municipio</h1>
         <p className={styles.text}>
-          A tagline about [your app] that describes your value proposition.
+          Muestra en el checkout solo la tarifa de envío que corresponde al
+          departamento y municipio del cliente.
         </p>
-        {showForm && (
-          <Form className={styles.form} method="post" action="/auth/login">
-            <label className={styles.label}>
-              <span>Shop domain</span>
-              <input className={styles.input} type="text" name="shop" />
-              <span>e.g: my-shop-domain.myshopify.com</span>
-            </label>
-            <button className={styles.button} type="submit">
-              Log in
-            </button>
-          </Form>
-        )}
-        <ul className={styles.list}>
-          <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
-          </li>
-          <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
-          </li>
-          <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
-          </li>
-        </ul>
+        <p className={styles.text}>
+          Instala la app desde la Shopify App Store y ábrela desde el admin de
+          tu tienda.
+        </p>
       </div>
     </div>
   );
