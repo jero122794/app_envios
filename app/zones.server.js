@@ -170,11 +170,84 @@ const SET_ZONES_MUTATION = `#graphql
   }
 `;
 
-const DELIVERY_PROFILES_QUERY = `#graphql
-  query DeliveryProfileRates {
+const SHOP_SHIPPING_MODEL_QUERY = `#graphql
+  query ShopShippingModel {
     shop {
       currencyCode
+      features {
+        marketDrivenShipping
+      }
     }
+  }
+`;
+
+// Shops on market-driven shipping keep their rates in Markets; deliveryProfiles
+// may return a stale snapshot there. Carrier-calculated options have no name
+// for the app to match, so they are not listed.
+const MARKET_RATES_QUERY = `#graphql
+  query MarketRates {
+    markets(first: 50) {
+      nodes {
+        name
+        status
+        conditions {
+          regionsCondition {
+            regions(first: 250) {
+              nodes {
+                __typename
+                ... on MarketRegionCountry {
+                  countryCode: code
+                }
+                ... on MarketRegionSubdivision {
+                  subdivisionCode: code
+                  country {
+                    code
+                  }
+                }
+              }
+            }
+          }
+        }
+        delivery {
+          shipping {
+            isEnabled
+            optionDefinitions(first: 50) {
+              nodes {
+                __typename
+                isActive
+                ... on DeliveryFlatRateOptionDefinition {
+                  id
+                  name
+                  rateGroups(first: 1) {
+                    nodes {
+                      rate {
+                        price {
+                          amount
+                          currencyCode
+                        }
+                      }
+                    }
+                  }
+                }
+                ... on DeliveryValueBasedOptionDefinition {
+                  id
+                  name
+                }
+                ... on DeliveryWeightBasedOptionDefinition {
+                  id
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const DELIVERY_PROFILES_QUERY = `#graphql
+  query DeliveryProfileRates {
     deliveryProfiles(first: 10) {
       nodes {
         id
@@ -324,45 +397,106 @@ export async function setCustomizationEnabled(admin, enabled) {
 }
 
 /**
- * Flattens every shipping rate in the store's delivery profiles, with the
- * Shopify shipping zone it belongs to and that zone's Colombian departments.
- * Returns `{ rates }` or `{ error }` (e.g. missing `read_shipping` scope).
+ * Flattens the shipping rates of the active markets that sell to Colombia, with
+ * the market they belong to and its Colombian departments.
  */
-export async function listShippingRates(admin) {
-  try {
-    const response = await admin.graphql(DELIVERY_PROFILES_QUERY);
-    const json = await response.json();
-    if (json.errors?.length) {
-      return { error: json.errors.map((e) => e.message).join(", ") };
-    }
+export function flattenMarketRates(markets) {
+  const rates = [];
+  for (const market of markets ?? []) {
+    if (market.status !== "ACTIVE") continue;
+    const shipping = market.delivery?.shipping;
+    if (!shipping?.isEnabled) continue;
 
-    const rates = [];
-    for (const profile of json.data?.deliveryProfiles?.nodes ?? []) {
-      for (const group of profile.profileLocationGroups ?? []) {
-        for (const groupZone of group.locationGroupZones?.nodes ?? []) {
-          const colombia = groupZone.zone?.countries?.find(
-            (country) => country.code?.countryCode === "CO",
-          );
-          if (!colombia) continue;
-          const provinces = (colombia?.provinces ?? [])
-            .map((province) => province.code?.replace(/^CO-/, ""))
-            .filter(Boolean);
-          for (const method of groupZone.methodDefinitions?.nodes ?? []) {
-            const price = method.rateProvider?.price;
-            rates.push({
-              id: method.id,
-              name: method.name,
-              active: method.active,
-              price: price ? formatPrice(price) : null,
-              profileName: profile.name,
-              shippingZoneName: groupZone.zone?.name ?? "",
-              provinces,
-            });
-          }
+    const regions = market.conditions?.regionsCondition?.regions?.nodes ?? [];
+    const coversColombia = regions.some(
+      (region) =>
+        region.__typename === "MarketRegionCountry" &&
+        region.countryCode === "CO",
+    );
+    const provinces = regions
+      .filter(
+        (region) =>
+          region.__typename === "MarketRegionSubdivision" &&
+          region.country?.code === "CO",
+      )
+      .map((region) => region.subdivisionCode?.replace(/^CO-/, ""))
+      .filter(Boolean);
+    if (!coversColombia && provinces.length === 0) continue;
+
+    for (const option of shipping.optionDefinitions?.nodes ?? []) {
+      if (!option.name) continue;
+      const price = option.rateGroups?.nodes?.[0]?.rate?.price;
+      rates.push({
+        id: option.id,
+        name: option.name,
+        active: option.isActive,
+        price: price ? formatPrice(price) : null,
+        profileName: "Mercado",
+        shippingZoneName: market.name ?? "",
+        provinces,
+      });
+    }
+  }
+  return rates;
+}
+
+/** Flattens the rates of the legacy delivery profiles that ship to Colombia. */
+function flattenProfileRates(profiles) {
+  const rates = [];
+  for (const profile of profiles ?? []) {
+    for (const group of profile.profileLocationGroups ?? []) {
+      for (const groupZone of group.locationGroupZones?.nodes ?? []) {
+        const colombia = groupZone.zone?.countries?.find(
+          (country) => country.code?.countryCode === "CO",
+        );
+        if (!colombia) continue;
+        const provinces = (colombia?.provinces ?? [])
+          .map((province) => province.code?.replace(/^CO-/, ""))
+          .filter(Boolean);
+        for (const method of groupZone.methodDefinitions?.nodes ?? []) {
+          const price = method.rateProvider?.price;
+          rates.push({
+            id: method.id,
+            name: method.name,
+            active: method.active,
+            price: price ? formatPrice(price) : null,
+            profileName: profile.name,
+            shippingZoneName: groupZone.zone?.name ?? "",
+            provinces,
+          });
         }
       }
     }
-    return { rates, shopCurrency: json.data?.shop?.currencyCode ?? null };
+  }
+  return rates;
+}
+
+async function runQuery(admin, query) {
+  const response = await admin.graphql(query);
+  const json = await response.json();
+  if (json.errors?.length) {
+    throw new Error(json.errors.map((e) => e.message).join(", "));
+  }
+  return json.data;
+}
+
+/**
+ * Lists every shipping rate for Colombia, read from Markets or from the delivery
+ * profiles depending on the shop's shipping model. Returns `{ rates }` or
+ * `{ error }` (e.g. missing `read_markets` or `read_shipping` scope).
+ */
+export async function listShippingRates(admin) {
+  try {
+    const { shop } = await runQuery(admin, SHOP_SHIPPING_MODEL_QUERY);
+    const rates = shop?.features?.marketDrivenShipping
+      ? flattenMarketRates(
+          (await runQuery(admin, MARKET_RATES_QUERY))?.markets?.nodes,
+        )
+      : flattenProfileRates(
+          (await runQuery(admin, DELIVERY_PROFILES_QUERY))?.deliveryProfiles
+            ?.nodes,
+        );
+    return { rates, shopCurrency: shop?.currencyCode ?? null };
   } catch (error) {
     return { error: error.message ?? String(error) };
   }

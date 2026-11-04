@@ -123,7 +123,7 @@ git push origin main
    | `SHOPIFY_API_KEY` | El **Client ID** de la app (Dev Dashboard → envios-colombia → Settings). Es el `client_id` de `shopify.app.toml`. |
    | `SHOPIFY_API_SECRET` | El **Client secret** de la misma pantalla |
    | `SHOPIFY_APP_URL` | La URL que te dio Render, por ejemplo `https://envios-colombia.onrender.com` (sin `/` al final) |
-   | `SCOPES` | `read_shipping,write_delivery_customizations` |
+   | `SCOPES` | `read_markets,read_shipping,write_delivery_customizations` |
    | `DATABASE_URL` | La connection string de producción de Neon |
 
    Render define `PORT` automáticamente y la app lo usa, así que no hace falta agregarla.
@@ -194,7 +194,8 @@ Cada vez que hagas `git push` a `main`, Render vuelve a desplegar automáticamen
 Lo que ya cumple el código:
 
 - Webhooks obligatorios de privacidad (`customers/data_request`, `customers/redact`, `shop/redact`) en `app/routes/webhooks.compliance.jsx`
-- Permisos mínimos: `read_shipping`, `write_delivery_customizations`
+- Permisos mínimos: `read_markets`, `read_shipping`, `write_delivery_customizations`
+- Compatible con market-driven shipping: lee las tarifas de Markets o de los perfiles de envío según la tienda
 - Sin formulario para escribir el dominio `.myshopify.com` a mano
 - App embebida con App Bridge y session tokens
 
