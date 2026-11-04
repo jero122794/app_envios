@@ -2,11 +2,11 @@
 
 client_id = "afa4b47492bdbcc106bf44ee9d1cd714"
 name = "envios-colombia"
-application_url = "https://example.com"
+application_url = "https://app-envios-g86d.onrender.com"
 embedded = true
 
 [build]
-automatically_update_urls_on_dev = true
+automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2026-07"
@@ -29,4 +29,4 @@ api_version = "2026-07"
 scopes = "read_shipping,write_delivery_customizations"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://app-envios-g86d.onrender.com/auth/callback" ]
