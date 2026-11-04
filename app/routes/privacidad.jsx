@@ -13,9 +13,9 @@ export default function Privacidad() {
     <main style={{ maxWidth: "45rem", margin: "0 auto", padding: "2rem 1rem" }}>
       <h1>Política de privacidad</h1>
       <p>
-        Esta política explica qué datos usa la app de Shopify &quot;Envíos por
-        municipio&quot;, que muestra en el checkout solo la tarifa de envío que
-        corresponde a la dirección del cliente.
+        Esta política explica qué datos usa la app de Shopify &quot;Quantum
+        Envíos Colombia&quot;, que muestra en el checkout solo la tarifa de envío
+        que corresponde a la dirección del cliente.
       </p>
 
       <h2>Datos de los clientes de la tienda</h2>

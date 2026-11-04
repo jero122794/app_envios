@@ -4,11 +4,11 @@ Textos listos para copiar. Lo que está entre `[corchetes]` lo debes completar.
 
 ## Datos de la ficha
 
-- **Nombre:** `[nombre definitivo]`. Debe compartir palabras con el nombre de `shopify.app.toml` y empezar con una marca propia.
+- **Nombre:** `Quantum Envíos Colombia`. Debe compartir palabras con el nombre de `shopify.app.toml` y empezar con una marca propia.
 - **Idioma principal:** Español
 - **Precio:** Gratis
 - **URL de la política de privacidad:** `https://app-envios-g86d.onrender.com/privacidad`
-- **Correo de soporte y de la API:** `[correo de soporte, sin la palabra "Shopify"]`
+- **Correo de soporte y de la API:** `soporteenviospp@gmail.com`
 - **Contacto de emergencia:** `[correo]` y `[teléfono]`
 - **Ícono:** 1200 x 1200 px, JPEG o PNG, sin precios ni marcas de Shopify
 

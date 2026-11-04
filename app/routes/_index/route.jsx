@@ -18,7 +18,7 @@ export default function App() {
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>Envíos por municipio</h1>
+        <h1 className={styles.heading}>Quantum Envíos Colombia</h1>
         <p className={styles.text}>
           Muestra en el checkout solo la tarifa de envío que corresponde al
           departamento y municipio del cliente.
